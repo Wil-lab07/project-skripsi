@@ -1,10 +1,11 @@
-import type { NextPage } from 'next';
-import { Flex, Button } from '@chakra-ui/react';
+import type { NextPage } from 'next'
+import { Flex, Button } from '@chakra-ui/react'
 import {
   useAccount,
   useConnect,
   useContractRead,
 } from 'wagmi'
+
 import { useEffect, useState } from 'react';
 import { InjectedConnector } from 'wagmi/connectors/injected'
 import { polygonMumbai } from 'viem/chains';
@@ -17,15 +18,15 @@ import {
   accessADMIN 
 } from '../constant/metadata'
 import Reject from '../components/reject';
-import Grant from '../components/grant';
+import { useRouter } from 'next/navigation';
 
-const Operator : NextPage = () => {
+const Login : NextPage = () => {
   const { address, isConnected } = useAccount()
   const { connect } = useConnect({
     connector: new InjectedConnector(),
     chainId: polygonMumbai.id
   })
-  const [hasAccess, setHasAccess] = useState(false)
+  const { push } = useRouter()
 
   const { data: rphResult, isError: rphError, isLoading: rphLoading } = useContractRead({
     address: traceAddress,
@@ -56,44 +57,39 @@ const Operator : NextPage = () => {
     watch: true
   })
 
+  const [hasAccess, setHasAccess] = useState(false)
+
   // Hooks
   useEffect(() => {
     setHasAccess(true)
   }, [address])
-  
-  if (!hasAccess) return null
+  if(!hasAccess) return null
 
-  if (!isConnected) {
-    return (
-      <>
-        <Flex
-          h="100vh"
-          direction={"column"}
-          alignItems={"center"}
-          justifyContent={"center"}
-        >
-          <Button
-            colorScheme='blue'
-            size='lg'
-            onClick={() => connect()}
-          >
-            Connect Wallet 
-          </Button>
-        </Flex>
-      </>
-    )
+  if (isConnected && (rphResult || distributorResult || rumahMakanResult || adminResult)) {
+    push('/operator')
+  } 
+  else if (isConnected && !(rphResult || distributorResult || rumahMakanResult || adminResult)) {
+    return <Reject/>
   }
 
   return (
     <>
-      {rphResult! || distributorResult! || rumahMakanResult! || adminResult! 
-      ? 
-        <Grant/> 
-      : 
-        <Reject/>
-      }
-    </>  
+      <Flex
+        h="100vh"
+        direction={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Button
+          colorScheme='blue'
+          size='lg'
+          onClick={() => connect()}
+        >
+          Connect Wallet 
+        </Button>
+      </Flex>
+    </>
   )
 }
 
-export default Operator;
+export default Login
