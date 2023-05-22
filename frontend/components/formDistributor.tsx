@@ -13,16 +13,19 @@ import {
 } from "@chakra-ui/react"
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { useState } from 'react';
-import { useContractWrite, useWaitForTransaction } from 'wagmi'
+import { useAccount, useContractWrite, useWaitForTransaction } from 'wagmi'
 import { traceAddress } from '../constant/metadata';
 import { ToastContainer, toast } from 'react-toastify';
 import NextLink from 'next/link'
 import Trace from '../constant/TraceABI.json'
 import 'react-toastify/dist/ReactToastify.css';
 
-interface PemotonganSubmit {
-  jenis_kelamin: string;
-  tanggal_pemotongan: string;
+interface DistributorSubmit {
+  id_produkRPH: string;
+  nama: string;
+  tanggal_penyimpanan: string;
+  waktu_pengiriman: string;
+  waktu_tiba: string;
   status_kehalalan: string;
 }
 
@@ -30,14 +33,15 @@ interface CustomToastWithLinkProps {
   link: string;
 }
 
-const FormPemotongan : NextPage = () => {
-  const { register, handleSubmit, control } = useForm<PemotonganSubmit>();
+const FormDistributor : NextPage = () => {
+  const { register, handleSubmit, control } = useForm<DistributorSubmit>();
   const [ isLoading, setIsLoading ] = useState(false)
+  const { address } = useAccount()
 
   const customToastWithLink = ({link}: CustomToastWithLinkProps) => {
     return (
       <Box _hover={{color: 'green'}}>
-        <NextLink href={link} target='_blank'>Input Pemotongan Berhasil</NextLink>
+        <NextLink href={link} target='_blank'>Input Produk Distributor Berhasil</NextLink>
       </Box>
     )
   }
@@ -45,7 +49,7 @@ const FormPemotongan : NextPage = () => {
   const { data: inputData, writeAsync } = useContractWrite({
     address: traceAddress,
     abi: Trace.abi,
-    functionName: 'inputPemotongan',
+    functionName: 'inputProdukDistributor',
   })
 
   const { isLoading: isInputLoading } = useWaitForTransaction({
@@ -58,15 +62,19 @@ const FormPemotongan : NextPage = () => {
     }
   })
 
-  const sendTransaction: SubmitHandler<PemotonganSubmit> = async (data) => {
+  const sendTransaction: SubmitHandler<DistributorSubmit> = async (data) => {
     try {
       console.time('writeAsync')
       setIsLoading(true)
       await writeAsync({
         args: [
-          data.jenis_kelamin,
-          data.tanggal_pemotongan,
-          data.status_kehalalan,
+          data.id_produkRPH,
+          address,
+          data.nama,
+          data.tanggal_penyimpanan,
+          data.waktu_pengiriman,
+          data.waktu_tiba,
+          data.status_kehalalan
         ]
       })
     } catch (err: any) {
@@ -91,33 +99,34 @@ const FormPemotongan : NextPage = () => {
     <>
       <Box w="400px" borderRadius="10px" border="solid white">
         <form onSubmit={handleSubmit(sendTransaction)}>
-          <FormControl borderBottom="solid 1px gray" p={'20px'} my={'10px'}>
+          <FormControl isRequired borderBottom="solid 1px gray" p={'20px'} my={'10px'}>
             <FormLabel color="white">
-              Jenis Kelamin Sapi
+              ID ProdukRPH
             </FormLabel>
-            <Controller
-              name="jenis_kelamin"
-              control={control}
-              render={({ field: { onChange, value } }) => (
-                <RadioGroup 
-                  onChange={onChange} 
-                  value={value} 
-                  color="white"
-                  border="solid 1px gray"
-                  borderRadius={'5px'}
-                  p={'5px'}
-                >
-                  <HStack spacing="54px" >
-                    <Radio value="Jantan">Jantan</Radio>
-                    <Radio value="Betina">Betina</Radio>
-                  </HStack>  
-                </RadioGroup>
-              )}
+            <Input 
+              color="white" 
+              placeholder="Input ID ProdukRPH Yang Sudah Tersedia" 
+              size="md" 
+              type="text"
+              border="solid 1px gray"
+              {...register("id_produkRPH", { required: true })}
+            />
+          </FormControl>
+          <FormControl isRequired borderBottom="solid 1px gray" p={'20px'} my={'10px'}>
+            <FormLabel color="white">
+              Nama Produk
+            </FormLabel>
+            <Input 
+              color="white" 
+              size="md" 
+              type="text"
+              border="solid 1px gray"
+              {...register("nama", { required: true })}
             />
           </FormControl>
           <FormControl borderBottom="solid 1px gray" p={'20px'} my={'10px'}>
             <FormLabel color="white">
-              Tanggal Pemotongan
+              Tanggal Penyimpanan
             </FormLabel>
             <Input 
               color="white" 
@@ -125,7 +134,33 @@ const FormPemotongan : NextPage = () => {
               size="md" 
               type="datetime-local"
               border="solid 1px gray"
-              {...register("tanggal_pemotongan", { required: true })}
+              {...register("tanggal_penyimpanan", { required: true })}
+            />
+          </FormControl>
+          <FormControl borderBottom="solid 1px gray" p={'20px'} my={'10px'}>
+            <FormLabel color="white">
+              Waktu Pengiriman
+            </FormLabel>
+            <Input 
+              color="white" 
+              placeholder="Select Date and Time" 
+              size="md" 
+              type="datetime-local"
+              border="solid 1px gray"
+              {...register("waktu_pengiriman", { required: true })}
+            />
+          </FormControl>
+          <FormControl borderBottom="solid 1px gray" p={'20px'} my={'10px'}>
+            <FormLabel color="white">
+              Waktu Tiba
+            </FormLabel>
+            <Input 
+              color="white" 
+              placeholder="Select Date and Time" 
+              size="md" 
+              type="datetime-local"
+              border="solid 1px gray"
+              {...register("waktu_tiba", { required: true })}
             />
           </FormControl>
           <FormControl p={'20px'} my={'10px'}>
@@ -152,4 +187,4 @@ const FormPemotongan : NextPage = () => {
   )
 }
 
-export default FormPemotongan;
+export default FormDistributor;

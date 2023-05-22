@@ -4,14 +4,11 @@ import {
   FormLabel,
   Input,
   Checkbox,
-  RadioGroup,
-  HStack,
-  Radio,
   Button,
   Text,
   Box,
 } from "@chakra-ui/react"
-import { SubmitHandler, useForm, Controller } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useState } from 'react';
 import { useContractWrite, useWaitForTransaction } from 'wagmi'
 import { traceAddress } from '../constant/metadata';
@@ -75,9 +72,15 @@ const FormRPH : NextPage = () => {
 
       const error = err['shortMessage']
       const errorParts = error.split('\n');
-      const errorMessage = errorParts[1].trim();
+      const errorMessage: string = errorParts[1].trim();
 
-      toast.error(`Input Produk RPH Gagal (${errorMessage})`)
+      let errorMessageReal: string = errorMessage
+        
+      if (errorMessage.includes('AccessControl')) {
+        errorMessageReal = 'Anda tidak memiliki akses pada halaman ini'
+      }
+
+      toast.error(`Input Produk Distributor Gagal (${errorMessageReal})`)
     }
   }
 
