@@ -20,7 +20,7 @@ const MenuComponent: NextPage = () => {
         <MenuItem onClick={()=> push('/operator/input/pemotongan')}>Input Pemotongan</MenuItem>
         <MenuItem onClick={()=> push('/operator/input/rph')}>Input RPH</MenuItem>
         <MenuItem onClick={()=> push('/operator/input/distributor')}>Input Distributor</MenuItem>
-        <MenuItem>Input Makanan</MenuItem>
+        <MenuItem onClick={()=> push('/operator/input/makanan')}>Input Makanan</MenuItem>
       </MenuList>
     </Menu>
   )

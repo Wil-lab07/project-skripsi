@@ -64,7 +64,6 @@ const Login : NextPage = () => {
     setHasAccess(true)
   }, [address])
   if(!hasAccess) return null
-
   if (isConnected && (rphResult || distributorResult || rumahMakanResult || adminResult)) {
     push('/operator')
   } 
