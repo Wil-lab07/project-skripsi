@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import { useAccount } from 'wagmi'
 import Content from '../../components/content';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import { useEffect } from 'react';
 
 const Operator : NextPage = () => {
