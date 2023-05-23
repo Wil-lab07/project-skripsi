@@ -1,8 +1,4 @@
 import type { NextPage } from 'next'
-import { useState } from 'react'
-import { ethers } from 'ethers'
-import { traceAddress } from '../constant/metadata'
-import Trace from '../constant/TraceABI.json'
 import {
   Table,
   Thead,
@@ -13,28 +9,11 @@ import {
   TableCaption,
   TableContainer,
 } from '@chakra-ui/react'
-
-const TablePemotongan: NextPage = () => {          
-  const [dataType, setDataType] = useState('pemotongan')
-
+import { useTracePemotongan } from '../swr/useTrace'
   
-
-  const ListenToEvent = () => {
-    // contract.on("TracePemotongan", (ID_Pemotongan, Akun_RPH, jenis_kelamin, tanggal_pemotongan, status_kehalalan, date, event) => {
-    //   let data = {
-    //     ID_Pemotongan,
-    //     Akun_RPH,
-    //     jenis_kelamin,
-    //     tanggal_pemotongan,
-    //     status_kehalalan,
-    //     date,
-    //     event
-    //   }
-    //   console.log(data)
-    // }) 
-  }
-  ListenToEvent()
-
+const TablePemotongan: NextPage = () => {          
+  const dataPemotongan = useTracePemotongan()
+  console.log(dataPemotongan)
   return (
     <>
       <TableContainer>
