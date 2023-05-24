@@ -1,28 +1,19 @@
 import type { NextPage } from 'next'
-import { useTracePemotongan } from '../swr/useTrace'
+import { useTraceProdukRPH } from '../swr/useTrace'
 import { Text } from '@chakra-ui/react';
 import { CheckCircle } from '@mui/icons-material';
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
 
-const TablePemotongan: NextPage = () => {          
-  const data = useTracePemotongan()
-  
+const TableRPH: NextPage = () => {          
+  const data = useTraceProdukRPH()
   const column: MUIDataTableColumn[] = [
     {
-      name: 'ID_Pemotongan',
+      name: 'ID_ProdukRPH',
       label: 'ID',
     },
     {
-      name: 'Akun_RPH',
-      label: 'Penginput',
-    },
-    {
-      name: 'jenis_kelamin',
-      label: 'Jenis Kelamin',
-    },
-    {
-      name: 'tanggal_pemotongan',
-      label: 'Tanggal Pemotongan',
+      name: 'ID_Pemotongan',
+      label: 'ID Pemotongan',
     },
     {
       name: 'status_kehalalan',
@@ -68,7 +59,7 @@ const TablePemotongan: NextPage = () => {
   )
 }
   
-export default TablePemotongan
+export default TableRPH
 
 
 

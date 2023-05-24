@@ -20,10 +20,10 @@ const TraceFetcher = (args: TraceRequest): Promise<Array<any>> => {
     case 'pemotongan':
       filter = traceabilityContract.filters.TracePemotongan();
       break;
-    case 'produkRPH':
+    case 'rph':
       filter = traceabilityContract.filters.TraceProdukRPH();
       break;
-    case 'produkDistributor':
+    case 'distributor':
       filter = traceabilityContract.filters.TraceProdukDistributor();
       break;
     case 'makanan':
@@ -80,7 +80,7 @@ export function useTracePemotongan() {
 
 export function useTraceProdukRPH() {
   const { data, error } = useSWR<Array<any>, Error>(
-    {type: 'produkRPH'},
+    {type: 'rph'},
     TraceFetcher
   )
   const result: Array<any> = 
@@ -93,7 +93,6 @@ export function useTraceProdukRPH() {
       year: 'numeric',
       minute: 'numeric',
     }).format(date);
-
     const result: TraceProdukRPHResult = {
       ID_ProdukRPH: item.args?.ID_ProdukRPH,
       ID_Pemotongan: item.args?.ID_Pemotongan,
@@ -112,7 +111,7 @@ export function useTraceProdukRPH() {
 
 export function useTraceProdukDistributor() {
   const { data, error } = useSWR<Array<any>, Error>(
-    {type: 'produkDistributor'},
+    {type: 'distributor'},
     TraceFetcher
   )
   const result: Array<any> = 

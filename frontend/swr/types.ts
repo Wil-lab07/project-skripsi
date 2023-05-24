@@ -1,5 +1,5 @@
 export type TraceRequest = {
-  type?: 'pemotongan' | 'produkRPH' | 'produkDistributor' | 'makanan';
+  type?: 'pemotongan' | 'rph' | 'distributor' | 'makanan';
 }
 
 export type TracePemotonganResult = {

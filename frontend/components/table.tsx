@@ -7,6 +7,9 @@ import {
 } 
 from '@chakra-ui/react'
 import TablePemotongan from './tablePemotongan'
+import TableRPH from './tableRPH'
+import TableDistributor from './tableDistributor'
+import TableMakanan from './tableMakanan'
 
 const TableComponent: NextPage = () => {          
   const [dataType, setDataType] = useState('pemotongan')
@@ -47,6 +50,9 @@ const TableComponent: NextPage = () => {
         alignItems={'center'}
       >
         {dataType === 'pemotongan' && <TablePemotongan/>}
+        {dataType === 'rph' && <TableRPH/>}
+        {dataType === 'distributor' && <TableDistributor/>}
+        {dataType === 'makanan' && <TableMakanan/>}
       </Flex>
     </>
   )
