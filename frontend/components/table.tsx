@@ -15,25 +15,25 @@ const TableComponent: NextPage = () => {
       <Flex>
         <HStack spacing="10px">
           <Button
-            colorScheme={dataType === 'pemotongan' ? 'blue' : 'gray'}
+            colorScheme={dataType === 'pemotongan' ? 'purple' : 'gray'}
             onClick={() => setDataType('pemotongan')}
           >
             Pemotongan
           </Button>
           <Button
-            colorScheme={dataType === 'rph' ? 'blue' : 'gray'}
+            colorScheme={dataType === 'rph' ? 'purple' : 'gray'}
             onClick={() => setDataType('rph')}
           >
             RPH
           </Button>
           <Button
-            colorScheme={dataType === 'distributor' ? 'blue' : 'gray'}
+            colorScheme={dataType === 'distributor' ? 'purple' : 'gray'}
             onClick={() => setDataType('distributor')}
           >
             Distributor
           </Button>
           <Button
-            colorScheme={dataType === 'makanan' ? 'blue' : 'gray'}
+            colorScheme={dataType === 'makanan' ? 'purple' : 'gray'}
             onClick={() => setDataType('makanan')}
           >
             Makanan
@@ -41,8 +41,7 @@ const TableComponent: NextPage = () => {
         </HStack>
       </Flex>
       <Flex 
-        marginTop={'10px'} 
-        border='solid red' 
+        marginTop={'30px'} 
         w='100%'
         justifyContent={'center'}
         alignItems={'center'}

@@ -1,50 +1,69 @@
 import type { NextPage } from 'next'
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-} from '@chakra-ui/react'
 import { useTracePemotongan } from '../swr/useTrace'
-  
+import { Text } from '@chakra-ui/react';
+import { CheckCircle } from '@mui/icons-material';
+import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
+
 const TablePemotongan: NextPage = () => {          
-  const dataPemotongan = useTracePemotongan()
-  console.log(dataPemotongan)
+  const data = useTracePemotongan()
+  
+  const column: MUIDataTableColumn[] = [
+    {
+      name: 'ID_Pemotongan',
+      label: 'ID Pemotongan',
+    },
+    {
+      name: 'Akun_RPH',
+      label: 'Penginput',
+    },
+    {
+      name: 'jenis_kelamin',
+      label: 'Jenis Kelamin',
+    },
+    {
+      name: 'tanggal_pemotongan',
+      label: 'Tanggal Pemotongan',
+    },
+    {
+      name: 'status_kehalalan',
+      label: 'Halal',
+      options: {
+        customBodyRender: () => {
+          return (
+            <>
+              <CheckCircle sx={{ color: '#3c9a5d' }}/>
+            </>
+          )
+        }
+      }
+    },
+    {
+      name: 'date',
+      label: 'Tanggal Input',
+    }
+  ]
+
   return (
     <>
-      <TableContainer>
-        <Table variant='simple'>
-          <TableCaption>Imperial to metric conversion factors</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>To convert</Th>
-              <Th>into</Th>
-              <Th isNumeric>multiply by</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-            </Tr>
-            <Tr>
-              <Td>feet</Td>
-              <Td>centimetres (cm)</Td>
-              <Td isNumeric>30.48</Td>
-            </Tr>
-            <Tr>
-              <Td>yards</Td>
-              <Td>metres (m)</Td>
-              <Td isNumeric>0.91444</Td>
-            </Tr>
-          </Tbody>
-        </Table>
-      </TableContainer>
+      <MUIDataTable
+        title={"Data Pemotongan"}
+        columns={column}
+        data={data?.data}
+        options={{
+          rowsPerPage: 5,
+          selectableRows: 'none',
+          elevation: 1,
+          textLabels: {
+            body: {
+              noMatch: data.isLoading ? (
+                <Text>Loading...</Text>
+              ) : (
+                "Maaf, belum ada data yang tersedia"
+              )
+            }
+          }
+        }}
+      />
     </>
   )
 }

@@ -4,6 +4,8 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { createConfig, configureChains, WagmiConfig } from 'wagmi'
 import { polygonMumbai } from 'viem/chains' 
 import { publicProvider } from 'wagmi/providers/public'
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { deepmerge } from '@mui/utils'
 
 function MyApp({ Component, pageProps }: AppProps) {
   
@@ -27,12 +29,25 @@ function MyApp({ Component, pageProps }: AppProps) {
       })
     }
   })
-  
+  const themeMUI = createTheme({});
+
+  const themes = deepmerge(theme, themeMUI)
+
   return (
-    <ChakraProvider theme={theme}>
-      <WagmiConfig config={config}>
-        <Component {...pageProps} />
-      </WagmiConfig>
+    <ChakraProvider theme={extendTheme({
+      styles: {
+        global: (props: any) => ({
+          body: {
+            bg: "#282339"
+          }
+        })
+      }
+    })} resetCSS>
+      <ThemeProvider theme={themes}>
+        <WagmiConfig config={config}>
+          <Component {...pageProps} />
+        </WagmiConfig>
+      </ThemeProvider>
     </ChakraProvider>
   )
 }

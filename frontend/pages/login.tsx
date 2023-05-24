@@ -80,7 +80,7 @@ const Login : NextPage = () => {
         justifyContent={"center"}
       >
         <Button
-          colorScheme='blue'
+          colorScheme='purple'
           size='lg'
           onClick={() => connect()}
         >

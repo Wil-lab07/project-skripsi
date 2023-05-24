@@ -51,11 +51,20 @@ export function useTracePemotongan() {
       minute: 'numeric',
     }).format(date);
 
+    const tanggal_pemotongan = new Date(item.args?.tanggal_pemotongan);
+    const formatted_tanggal_pemotongan = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      minute: 'numeric',
+    }).format(tanggal_pemotongan);
+
     const result: TracePemotonganResult = {
       ID_Pemotongan: item.args?.ID_Pemotongan,
       Akun_RPH: item.args?.Akun_RPH,
       jenis_kelamin: item.args?.jenis_kelamin,
-      tanggal_pemotongan: item.args?.tanggal_pemotongan,
+      tanggal_pemotongan: formatted_tanggal_pemotongan,
       status_kehalalan: item.args?.status_kehalalan,
       date: formattedDate
     }
@@ -117,13 +126,41 @@ export function useTraceProdukDistributor() {
       minute: 'numeric',
     }).format(date);
 
+    const durasi_penyimpanan = new Date(item.args?.durasi_penyimpanan);
+    const waktu_pengiriman = new Date(item.args?.waktu_pengiriman);
+    const waktu_tiba = new Date(item.args?.waktu_tiba);
+
+    const formatted_durasi_penyimpanan = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      minute: 'numeric',
+    }).format(durasi_penyimpanan);
+
+    const formatted_waktu_pengiriman = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      minute: 'numeric',
+    }).format(waktu_pengiriman);
+
+    const formatted_waktu_tiba = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      minute: 'numeric',
+    }).format(waktu_tiba);
+
     const result: TraceProdukDistributorResult = {
       ID_ProdukDistributor: item.args?.ID_ProdukDistributor,
       ID_ProdukRPH: item.args?.ID_ProdukRPH,
       Akun_Distributor: item.args?.Akun_Distributor,
-      durasi_penyimpanan: item.args?.durasi_penyimpanan,
-      waktu_pengiriman: item.args?.waktu_pengiriman,
-      waktu_tiba: item.args?.waktu_tiba,
+      durasi_penyimpanan: formatted_durasi_penyimpanan,
+      waktu_pengiriman: formatted_waktu_pengiriman,
+      waktu_tiba: formatted_waktu_tiba,
       status_kehalalan: item.args?.status_kehalalan,
       date: formattedDate
     }
@@ -153,12 +190,21 @@ export function useTraceMakanan() {
       minute: 'numeric',
     }).format(date);
 
+    const tanggal_pengolahan = new Date(item.args?.tanggal_pengolahan);
+    const formatted_tanggal_pengolahan = new Intl.DateTimeFormat('en-US', {
+      hour: 'numeric',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+      minute: 'numeric',
+    }).format(tanggal_pengolahan);
+
     const result: TraceMakananResult = {
       ID_Makanan: item.args?.ID_Makanan,
       ID_ProdukDistributor: item.args?.ID_ProdukDistributor,
       Akun_RumahMakan: item.args?.Akun_RumahMakan,
       nama: item.args?.nama,
-      tanggal_pengolahan: item.args?.tanggal_pengolahan,
+      tanggal_pengolahan: formatted_tanggal_pengolahan,
       status_kehalalan: item.args?.status_kehalalan,
       date: formattedDate
     }

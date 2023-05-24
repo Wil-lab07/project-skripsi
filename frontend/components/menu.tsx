@@ -8,13 +8,14 @@ import {
 } 
 from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
+import { Menu as _Menu } from '@mui/icons-material'
 
 const MenuComponent: NextPage = () => {          
   const { push } = useRouter()  
   return (
     <Menu>
-      <MenuButton as={Button}>
-        Menu
+      <MenuButton as={Button} colorScheme='purple'>
+        <_Menu sx={{ color: 'white' }}/>
       </MenuButton>
       <MenuList>
         <MenuItem onClick={()=> push('/operator')}>Operator</MenuItem>
