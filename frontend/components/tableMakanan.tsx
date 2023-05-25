@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import { useTraceMakanan } from '../swr/useTrace'
-import { Text } from '@chakra-ui/react';
+import { Button, Text } from '@chakra-ui/react';
 import { CheckCircle } from '@mui/icons-material';
 import MUIDataTable, {MUIDataTableColumn} from "mui-datatables";
+import Link from 'next/link';
 
 const TableMakanan: NextPage = () => {          
   const data = useTraceMakanan()
@@ -44,6 +45,24 @@ const TableMakanan: NextPage = () => {
     {
       name: 'date',
       label: 'Tanggal Input',
+    },
+    {
+      name: 'ID_Makanan',
+      label: '  ',
+      options: {
+        customBodyRender: (value: string) => {
+          return (
+            <Link href={`/trace/${value}`} passHref>
+              <Button 
+                colorScheme='purple' 
+                size='sm'
+              >
+                Detail
+              </Button>
+            </Link>
+          )
+        }
+      }
     }
   ]
 
