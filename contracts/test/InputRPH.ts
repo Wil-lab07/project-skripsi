@@ -3,7 +3,7 @@ import { Contract } from 'ethers'
 import { ethers } from 'hardhat'
 import { expect } from 'chai'
 
-describe('Trace.InputPemotongan()', function() {
+describe('Trace.InputProdukRPH()', function() {
     let owner, rph, distributor, rumah_makan: SignerWithAddress;
     let base: Contract;
 
@@ -26,13 +26,11 @@ describe('Trace.InputPemotongan()', function() {
         )
         await base.connect(rph).inputProdukRPH(
             "PMTG1",
-            "Daging Sapi",
             true
         )
         const produkRPH = await base.produkRPH('PRPH1')
         expect(await produkRPH.ID).to.be.equal('PRPH1')
         expect(await produkRPH.ID_Pemotongan).to.be.equal('PMTG1')
-        expect(await produkRPH.nama).to.be.equal('Daging Sapi')
         expect(await produkRPH.status_kehalalan).to.be.equal(true)
     })
 
@@ -44,7 +42,6 @@ describe('Trace.InputPemotongan()', function() {
         )
         await expect(base.connect(distributor).inputProdukRPH(
             "PMTG1",
-            "Daging Sapi",
             true
         )).to.be.reverted;
     })
@@ -57,7 +54,6 @@ describe('Trace.InputPemotongan()', function() {
         )
         await expect(base.connect(rph).inputProdukRPH(
             "PMTG1",
-            "Daging Sapi",
             false
         )).to.be.revertedWith('Status Produk harus halal');
     })
@@ -65,7 +61,6 @@ describe('Trace.InputPemotongan()', function() {
     it('Input Data ProdukRPH Failed (Data Pemotongan Belum Tersedia)', async () => {
         await expect(base.connect(rph).inputProdukRPH(
             "PMTG1",
-            "Daging Sapi",
             true
         )).to.be.revertedWith('Data Pemotongan Tidak Terdaftar');
     })

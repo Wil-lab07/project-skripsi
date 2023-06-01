@@ -18,7 +18,7 @@ contract Trace is AccessControl {
     struct ProdukRPH {
         string ID;
         string ID_Pemotongan;
-        string nama;
+        address Akun_RPH;
         bool status_kehalalan;
         uint256 date;
     }
@@ -27,10 +27,9 @@ contract Trace is AccessControl {
         string ID;
         string ID_ProdukRPH;
         string Akun_Distributor;
-        string nama;
-        string durasi_penyimpanan;
-        string waktu_pengiriman;
-        string waktu_tiba;
+        string tanggal_penyimpanan;
+        string tanggal_pengiriman;
+        string tanggal_penerimaan;
         bool status_kehalalan;
         uint256 date;
     }
@@ -58,7 +57,7 @@ contract Trace is AccessControl {
     event TraceProdukRPH(
         string ID_ProdukRPH,
         string ID_Pemotongan,
-        string nama,
+        address Akun_RPH,
         bool status_kehalalan,
         uint256 date
     );
@@ -67,10 +66,9 @@ contract Trace is AccessControl {
         string ID_ProdukDistributor,
         string ID_ProdukRPH,
         string Akun_Distributor,
-        string nama,
-        string durasi_penyimpanan,
-        string waktu_pengiriman,
-        string waktu_tiba,
+        string tanggal_penyimpanan,
+        string tanggal_pengiriman,
+        string tanggal_penerimaan,
         bool status_kehalalan,
         uint256 date
     );
@@ -105,6 +103,7 @@ contract Trace is AccessControl {
     bytes32 public constant RUMAH_MAKAN = keccak256("RUMAH_MAKAN");
 
     constructor(address _rph, address _distributor, address _rumahMakan) {
+        // Secara default akan terbentuk jenis akses ADMIN dan diberikan kepada account yang melakukan deployment
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
 
         // Memberikan akses kepada operator
@@ -119,8 +118,10 @@ contract Trace is AccessControl {
         string memory _tanggal_pemotongan,
         bool _status_kehalalan
     ) public onlyRole(RPH) {
+        // Pengecekkan kehalalan status produk
         require(_status_kehalalan == true, "Status Produk harus halal");
 
+        // Menyimpan data pemotongan
         index_pemotongan++;
         string memory ID = string.concat(
             "PMTG",
@@ -147,9 +148,9 @@ contract Trace is AccessControl {
 
     function inputProdukRPH(
         string memory _ID_Pemotongan,
-        string memory _nama,
         bool _status_kehalalan
     ) public onlyRole(RPH) {
+        // Pengecekkan ketersediaan data pemotongan dan kehalalan status produk
         require(
             keccak256(
             abi.encodePacked((
@@ -158,23 +159,25 @@ contract Trace is AccessControl {
             );
         require(_status_kehalalan == true, "Status Produk harus halal");
 
+        // Menyimpan data produk RPH
         index_produkRPH++;
         string memory ID = string.concat(
             "PRPH",
             Strings.toString(index_produkRPH)
         );
+
         produkRPH[ID] = ProdukRPH(
             ID,
             _ID_Pemotongan,
-            _nama,
-            _status_kehalalan,
+            msg.sender,
+            true,
             block.timestamp
         );
 
         emit TraceProdukRPH(
             ID,
             _ID_Pemotongan,
-            _nama,
+            msg.sender,
             _status_kehalalan,
             block.timestamp
         );
@@ -183,12 +186,12 @@ contract Trace is AccessControl {
     function inputProdukDistributor(
         string memory _ID_ProdukRPH,
         string memory _Akun_Distributor,
-        string memory _nama,
-        string memory _durasi_penyimpanan,
-        string memory _waktu_pengiriman,
-        string memory _waktu_tiba,
+        string memory _tanggal_penyimpanan,
+        string memory _tanggal_pengiriman,
+        string memory _tanggal_penerimaan,
         bool _status_kehalalan
     ) public onlyRole(DISTRIBUTOR) {
+        // Pengecekkan ketersediaan data produk RPH dan kehalalan status produk
         require(
             keccak256(
             abi.encodePacked((
@@ -197,6 +200,7 @@ contract Trace is AccessControl {
             );
         require(_status_kehalalan == true, "Status Produk harus halal");
 
+        // Menyimpan data distributor
         index_produkDistributor++;
         string memory ID = string.concat(
             "PDST",
@@ -206,10 +210,9 @@ contract Trace is AccessControl {
             ID,
             _ID_ProdukRPH,
             _Akun_Distributor,
-            _nama,
-            _durasi_penyimpanan,
-            _waktu_pengiriman,
-            _waktu_tiba,
+            _tanggal_penyimpanan,
+            _tanggal_pengiriman,
+            _tanggal_penerimaan,
             _status_kehalalan,
             block.timestamp
         );
@@ -218,10 +221,9 @@ contract Trace is AccessControl {
             ID,
             _ID_ProdukRPH,
             _Akun_Distributor,
-            _nama,
-            _durasi_penyimpanan,
-            _waktu_pengiriman,
-            _waktu_tiba,
+            _tanggal_penyimpanan,
+            _tanggal_pengiriman,
+            _tanggal_penerimaan,
             _status_kehalalan,
             block.timestamp
         );
@@ -233,7 +235,8 @@ contract Trace is AccessControl {
         string memory _nama,
         string memory _tanggal_pengolahan,
         bool _status_kehalalan
-    ) public onlyRole(RUMAH_MAKAN) {
+    ) public onlyRole(RUMAH_MAKAN) {        
+        // Pengecekkan ketersediaan data produk Distributor dan kehalalan status produk
         require(
             keccak256(
             abi.encodePacked((
@@ -242,6 +245,7 @@ contract Trace is AccessControl {
             );
         require(_status_kehalalan == true, "Status Produk harus halal");
 
+        // Menyimpan data makanan
         index_makanan++;
         string memory ID = string.concat(
             "MKN",

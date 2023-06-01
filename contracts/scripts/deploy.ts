@@ -14,7 +14,7 @@ async function main() {
 
   console.log('Smart contract is deployed to:', base.address);
   console.log(
-    `npx hardhat verify --network mumbai --constructor-args scripts/argument.js ${base.address}`,
+    `npx hardhat verify --network polygonMumbai --constructor-args scripts/argument.js ${base.address}`,
   );
 }
 
