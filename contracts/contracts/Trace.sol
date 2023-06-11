@@ -26,7 +26,7 @@ contract Trace is AccessControl {
     struct ProdukDistributor {
         string ID;
         string ID_ProdukRPH;
-        string Akun_Distributor;
+        address Akun_Distributor;
         string tanggal_penyimpanan;
         string tanggal_pengiriman;
         string tanggal_penerimaan;
@@ -37,7 +37,7 @@ contract Trace is AccessControl {
     struct Makanan {
         string ID;
         string ID_ProdukDistributor;
-        string Akun_RumahMakan;
+        address Akun_RumahMakan;
         string nama;
         string tanggal_pengolahan;
         bool status_kehalalan;
@@ -65,7 +65,7 @@ contract Trace is AccessControl {
     event TraceProdukDistributor(
         string ID_ProdukDistributor,
         string ID_ProdukRPH,
-        string Akun_Distributor,
+        address Akun_Distributor,
         string tanggal_penyimpanan,
         string tanggal_pengiriman,
         string tanggal_penerimaan,
@@ -76,7 +76,7 @@ contract Trace is AccessControl {
     event TraceMakanan(
         string ID_Makanan,
         string ID_ProdukDistributor,
-        string Akun_RumahMakan,
+        address Akun_RumahMakan,
         string nama,
         string tanggal_pengolahan,
         bool status_kehalalan,
@@ -185,7 +185,6 @@ contract Trace is AccessControl {
 
     function inputProdukDistributor(
         string memory _ID_ProdukRPH,
-        string memory _Akun_Distributor,
         string memory _tanggal_penyimpanan,
         string memory _tanggal_pengiriman,
         string memory _tanggal_penerimaan,
@@ -209,7 +208,7 @@ contract Trace is AccessControl {
         produkDistributor[ID] = ProdukDistributor(
             ID,
             _ID_ProdukRPH,
-            _Akun_Distributor,
+            msg.sender,
             _tanggal_penyimpanan,
             _tanggal_pengiriman,
             _tanggal_penerimaan,
@@ -220,7 +219,7 @@ contract Trace is AccessControl {
         emit TraceProdukDistributor(
             ID,
             _ID_ProdukRPH,
-            _Akun_Distributor,
+            msg.sender,
             _tanggal_penyimpanan,
             _tanggal_pengiriman,
             _tanggal_penerimaan,
@@ -231,7 +230,6 @@ contract Trace is AccessControl {
 
     function inputMakanan(
         string memory _ID_ProdukDistributor,
-        string memory _Akun_RumahMakan,
         string memory _nama,
         string memory _tanggal_pengolahan,
         bool _status_kehalalan
@@ -254,7 +252,7 @@ contract Trace is AccessControl {
         makanan[ID] = Makanan(
             ID,
             _ID_ProdukDistributor,
-            _Akun_RumahMakan,
+            msg.sender,
             _nama,
             _tanggal_pengolahan,
             _status_kehalalan,
@@ -264,11 +262,26 @@ contract Trace is AccessControl {
         emit TraceMakanan(
             ID,
             _ID_ProdukDistributor,
-            _Akun_RumahMakan,
+            msg.sender,
             _nama,
             _tanggal_pengolahan,
             _status_kehalalan,
             block.timestamp
         );
+    }
+
+    function traceSupplyChain(string memory _ID_Makanan) public view returns (
+        Makanan memory,
+        ProdukDistributor memory,
+        ProdukRPH memory,
+        Pemotongan memory
+    )
+    {
+        Makanan memory data1 = makanan[_ID_Makanan];
+        ProdukDistributor memory data2 = produkDistributor[data1.ID_ProdukDistributor];
+        ProdukRPH memory data3 = produkRPH[data2.ID_ProdukRPH];
+        Pemotongan memory data4 = pemotongan[data3.ID_Pemotongan];
+
+        return (data1, data2, data3, data4);
     }
 }

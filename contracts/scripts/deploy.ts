@@ -8,7 +8,7 @@ async function main() {
   const base = await Base.deploy(
     '0x430c0c0a0646a2c17DE69b659c18693C5Ea820cF', // RPH
     '0xD857b46DEC8F4F782Be29Ff1ad0bbE1315C9840C', // Distributor
-    '0xD857b46DEC8F4F782Be29Ff1ad0bbE1315C9840C'  // Rumah_Makan
+    '0x52075838A662Db50Df1B556A773a5E55574fD673'  // Rumah_Makan
   );
   await base.deployed();
 

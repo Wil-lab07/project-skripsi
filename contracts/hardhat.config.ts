@@ -3,6 +3,7 @@ import * as dotenv from "dotenv";
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "@nomiclabs/hardhat-etherscan";
+import "hardhat-gas-reporter";
 
 dotenv.config();
 
@@ -17,6 +18,12 @@ const config: HardhatUserConfig = {
     }
   },
   networks: {
+    hardhat: {
+      forking: {
+        url: "https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78" || "",
+        blockNumber: 36700883
+      }
+    },
     polygonMumbai: {
       url: process.env.MUMBAI_RPC_URL,
       accounts: 
@@ -30,6 +37,12 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: process.env.TIMEOUT || 1000000000000,
+  },
+  gasReporter: {
+    enabled: true,
+    outputFile: "gas-report.txt",
+    noColors: true,
+    currency: "USD",
   }
 };
 
